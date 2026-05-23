@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Draper-Scrimshires UK Trip — Aug 2026</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #fafafa;
+    --panel: #ffffff;
+    --panel-2: #f5f5f5;
+    --text: #18181b;
+    --text-2: #71717a;
+    --text-3: #a1a1aa;
+    --border: #e4e4e7;
+    --border-2: #d4d4d8;
+  }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    padding: 16px;
+    min-height: 100vh;
+    max-width: 900px;
+    margin: 0 auto;
+    -webkit-font-smoothing: antialiased;
+  }
+  
+  /* ===== HEADER ===== */
+  .header { margin-bottom: 18px; }
+  h1 {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 4px;
+    letter-spacing: -0.025em;
+    color: var(--text);
+  }
+  .subtitle {
+    font-size: 14px;
+    color: var(--text-2);
+  }
+  
+  /* ===== TBC BANNER ===== */
+  .tbc {
+    background: #fffbeb;
+    border: 1px solid #fcd34d;
+    border-left: 4px solid #f59e0b;
+    border-radius: 10px;
+    padding: 12px 14px;
+    margin-bottom: 16px;
+    font-size: 13px;
+    color: #78350f;
+    line-height: 1.5;
+  }
+  .tbc-title {
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-size: 11px;
+    color: #92400e;
+    margin-bottom: 4px;
+  }
+  .tbc ul {
+    list-style: none;
+    margin-top: 4px;
+  }
+  .tbc li {
+    padding: 2px 0;
+    color: #78350f;
+  }
+  .tbc li::before {
+    content: "• ";
+    color: #f59e0b;
+    font-weight: 700;
+    margin-right: 2px;
+  }
+  
+  /* ===== TLDR CARD ===== */
+  .tldr {
+    background: #f0fdf4;
+    border: 1px solid #86efac;
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-bottom: 16px;
+    font-size: 14px;
+    line-height: 1.55;
+    color: #14532d;
+  }
+  .tldr strong { color: #15803d; font-weight: 700; }
+  
+  /* ===== KEY DATES GRID ===== */
+  .keydates {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(155px, 1fr));
+    gap: 8px;
+    margin-bottom: 22px;
+  }
+  .keydate {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 12px;
+    border-left: 3px solid var(--border-2);
+  }
+  .keydate.draper { border-left-color: #8b5cf6; }
+  .keydate.cousins { border-left-color: #f97316; }
+  .keydate.guernsey { border-left-color: #3b82f6; }
+  .keydate.board { border-left-color: #f59e0b; }
+  .keydate .when {
+    font-size: 11px;
+    color: var(--text-3);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 2px;
+  }
+  .keydate .what {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+  }
+  
+  /* ===== TOGGLE ===== */
+  .toggle-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  .toggle-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-3);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .toggle input { display: none; }
+  .toggle .switch {
+    width: 34px;
+    height: 20px;
+    background: #d4d4d8;
+    border-radius: 11px;
+    position: relative;
+    transition: background 0.2s;
+  }
+  .toggle .switch::after {
+    content: "";
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 16px;
+    height: 16px;
+    background: #fff;
+    border-radius: 50%;
+    transition: transform 0.2s;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+  }
+  .toggle input:checked + .switch { background: #22c55e; }
+  .toggle input:checked + .switch::after { transform: translateX(14px); }
+  .toggle .switch-label {
+    font-size: 13px;
+    color: var(--text-2);
+    font-weight: 500;
+  }
+  
+  /* ===== CALENDAR ===== */
+  .grid-container {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 12px;
+    margin-bottom: 16px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: 80px repeat(31, minmax(14px, 1fr)) 4px repeat(7, minmax(14px, 1fr));
+    gap: 1px;
+    min-width: 500px;
+  }
+  .month-label-aug, .month-label-sep {
+    font-size: 9px;
+    font-weight: 700;
+    color: var(--text-3);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 2px 0 4px;
+    border-bottom: 1px solid var(--border);
+  }
+  .month-label-aug { grid-column: 2 / 33; }
+  .month-label-sep { grid-column: 34 / 41; }
+  .month-spacer { grid-column: 1 / 2; }
+  .month-divider { background: var(--bg); }
+  
+  .dow-cell {
+    font-size: 8px;
+    color: var(--text-3);
+    text-align: center;
+    padding: 2px 0;
+  }
+  .dow-cell.we { color: var(--text-2); font-weight: 600; }
+  .date-cell {
+    font-size: 9px;
+    color: var(--text-2);
+    text-align: center;
+    padding: 2px 0 4px;
+    font-weight: 500;
+  }
+  
+  .person-name {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text);
+    padding-right: 8px;
+    display: flex;
+    align-items: center;
+  }
+  .person-name.you { color: #b45309; font-weight: 700; }
+  .person-name.family { color: var(--text-2); font-weight: 500; }
+  .person-name.embassy { color: #b91c1c; font-size: 10px; font-weight: 700; }
+  .person-name.tbc-row { color: var(--text-3); font-weight: 500; font-style: italic; }
+  
+  .day {
+    height: 24px;
+    border-radius: 3px;
+    background: #f4f4f5;
+    border: 1px solid #e4e4e7;
+    position: relative;
+  }
+  .row-you .day { height: 28px; }
+  
+  /* Light-mode pastels with vivid borders */
+  .away { background: #fee2e2; border-color: #fca5a5; }
+  .school { background: #fef3c7; border-color: #fcd34d; }
+  .home { background: #d1fae5; border-color: #6ee7b7; }
+  .home-bright { background: #86efac; border-color: #22c55e; }
+  .brum { background: #fbcfe8; border-color: #ec4899; }
+  .guernsey { background: #93c5fd; border-color: #3b82f6; }
+  .guernsey-mum { background: #dbeafe; border-color: #93c5fd; }
+  .travel { background: #e5e7eb; border-color: #9ca3af; }
+  .us { background: #fafafa; border-color: #e4e4e7; }
+  .tbc { background: repeating-linear-gradient(45deg, #f4f4f5, #f4f4f5 3px, #e4e4e7 3px, #e4e4e7 6px); border-color: #d4d4d8; }
+  .board { 
+    background: #fde68a; 
+    border: 1.5px solid #f59e0b; 
+  }
+  .board::after {
+    content: "📍";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 9px;
+  }
+  .draper-cell { background: #c4b5fd; border-color: #8b5cf6; }
+  .cousins-b, .cousins-m {
+    background: #fdba74;
+    border: 1.5px solid #ea580c;
+  }
+  .cousins-b::after, .cousins-m::after {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 9px;
+    font-weight: 800;
+    color: #7c2d12;
+  }
+  .cousins-b::after { content: "B"; }
+  .cousins-m::after { content: "M"; }
+  
+  /* Embassy band */
+  .embassy-row {
+    display: grid;
+    grid-template-columns: 80px repeat(31, minmax(14px, 1fr)) 4px repeat(7, minmax(14px, 1fr));
+    gap: 1px;
+    min-width: 500px;
+    margin-top: 6px;
+    margin-bottom: 4px;
+    height: 16px;
+    align-items: center;
+  }
+  .embassy-band {
+    grid-column: 19 / 31;
+    background: repeating-linear-gradient(
+      45deg,
+      rgba(239,68,68,0.18),
+      rgba(239,68,68,0.18) 3px,
+      rgba(239,68,68,0.06) 3px,
+      rgba(239,68,68,0.06) 6px
+    );
+    border: 1px solid rgba(239,68,68,0.4);
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 8px;
+    font-weight: 700;
+    color: #b91c1c;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    height: 14px;
+  }
+  
+  /* Family rows hidden by default */
+  .family-rows { display: none; }
+  body.show-family .family-rows { display: contents; }
+  
+  /* Legend */
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 14px;
+    margin-bottom: 22px;
+    font-size: 11px;
+    color: var(--text-2);
+  }
+  .legend-item { display: flex; align-items: center; gap: 6px; }
+  .legend-box { width: 12px; height: 12px; border-radius: 3px; flex-shrink: 0; }
+  .legend-box.embassy-key {
+    background: repeating-linear-gradient(45deg, rgba(239,68,68,0.3), rgba(239,68,68,0.3) 3px, rgba(239,68,68,0.1) 3px, rgba(239,68,68,0.1) 6px);
+    border: 1px solid rgba(239,68,68,0.5);
+  }
+  .legend-box.tbc-key {
+    background: repeating-linear-gradient(45deg, #f4f4f5, #f4f4f5 3px, #d4d4d8 3px, #d4d4d8 6px);
+    border: 1px solid #d4d4d8;
+  }
+  .legend.family-legend { display: none; }
+  body.show-family .legend.family-legend { display: flex; }
+  
+  /* Footer note */
+  .footer-note {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    border-left: 3px solid #ef4444;
+    border-radius: 8px;
+    padding: 10px 12px;
+    margin-top: 16px;
+    font-size: 12px;
+    color: #7f1d1d;
+    line-height: 1.5;
+  }
+  .footer-note strong { color: #991b1b; }
+  
+  @media (max-width: 480px) {
+    body { padding: 12px; }
+    h1 { font-size: 20px; }
+    .keydates { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body class="show-family">
+
+<div class="header">
+  <h1>Draper-Scrimshires in the UK</h1>
+  <p class="subtitle">15 August → 5 September 2026</p>
+</div>
+
+<div class="tbc">
+  <div class="tbc-title">⚠ To be confirmed</div>
+  <ul>
+    <li>Draper family availability — especially for Draper-Scrimshire weekend 21–24 Aug</li>
+  </ul>
+</div>
+
+<div class="tldr">
+  We're back in the UK <strong>Sat 15 Aug → Sat 5 Sep</strong>. Draper-Scrimshire weekend <strong>Fri 21–Mon 24</strong>. Cousins <strong>Thu 27 (Brum) + Fri 28 (Mancs)</strong>. Guernsey <strong>Sat 29 Aug → Fri 4 Sep</strong>.
+</div>
+
+<div class="keydates">
+  <div class="keydate board">
+    <div class="when">Tue 18 – Wed 19 Aug</div>
+    <div class="what">📍 Modo board meeting, London</div>
+  </div>
+  <div class="keydate draper">
+    <div class="when">Fri 21 – Mon 24 Aug</div>
+    <div class="what">Draper-Scrimshire weekend</div>
+  </div>
+  <div class="keydate cousins">
+    <div class="when">Thu 27 + Fri 28 Aug</div>
+    <div class="what">Cousins — Brum then Mancs</div>
+  </div>
+  <div class="keydate guernsey">
+    <div class="when">Sat 29 Aug – Fri 4 Sep</div>
+    <div class="what">Guernsey holiday</div>
+  </div>
+</div>
+
+
+
+<div class="grid-container">
+  <div class="grid">
+    <div class="month-spacer"></div>
+    <div class="month-label-aug">August</div>
+    <div class="month-divider"></div>
+    <div class="month-label-sep">September</div>
+    
+    <div></div>
+    <div class="dow-cell we">S</div><div class="dow-cell we">S</div><div class="dow-cell">M</div><div class="dow-cell">T</div><div class="dow-cell">W</div><div class="dow-cell">T</div><div class="dow-cell">F</div>
+    <div class="dow-cell we">S</div><div class="dow-cell we">S</div><div class="dow-cell">M</div><div class="dow-cell">T</div><div class="dow-cell">W</div><div class="dow-cell">T</div><div class="dow-cell">F</div>
+    <div class="dow-cell we">S</div><div class="dow-cell we">S</div><div class="dow-cell">M</div><div class="dow-cell">T</div><div class="dow-cell">W</div><div class="dow-cell">T</div><div class="dow-cell">F</div>
+    <div class="dow-cell we">S</div><div class="dow-cell we">S</div><div class="dow-cell">M</div><div class="dow-cell">T</div><div class="dow-cell">W</div><div class="dow-cell">T</div><div class="dow-cell">F</div>
+    <div class="dow-cell we">S</div><div class="dow-cell we">S</div><div class="dow-cell">M</div>
+    <div class="month-divider"></div>
+    <div class="dow-cell">T</div><div class="dow-cell">W</div><div class="dow-cell">T</div><div class="dow-cell">F</div><div class="dow-cell we">S</div><div class="dow-cell we">S</div><div class="dow-cell">M</div>
+    
+    <div></div>
+    <div class="date-cell">1</div><div class="date-cell">2</div><div class="date-cell">3</div><div class="date-cell">4</div><div class="date-cell">5</div><div class="date-cell">6</div><div class="date-cell">7</div>
+    <div class="date-cell">8</div><div class="date-cell">9</div><div class="date-cell">10</div><div class="date-cell">11</div><div class="date-cell">12</div><div class="date-cell">13</div><div class="date-cell">14</div>
+    <div class="date-cell">15</div><div class="date-cell">16</div><div class="date-cell">17</div><div class="date-cell">18</div><div class="date-cell">19</div><div class="date-cell">20</div><div class="date-cell">21</div>
+    <div class="date-cell">22</div><div class="date-cell">23</div><div class="date-cell">24</div><div class="date-cell">25</div><div class="date-cell">26</div><div class="date-cell">27</div><div class="date-cell">28</div>
+    <div class="date-cell">29</div><div class="date-cell">30</div><div class="date-cell">31</div>
+    <div class="month-divider"></div>
+    <div class="date-cell">1</div><div class="date-cell">2</div><div class="date-cell">3</div><div class="date-cell">4</div><div class="date-cell">5</div><div class="date-cell">6</div><div class="date-cell">7</div>
+  </div>
+  
+  <div class="embassy-row">
+    <div class="person-name embassy">Embassy</div>
+    <div class="embassy-band">Available Mon 17 → Fri 28</div>
+  </div>
+
+  <div class="grid">
+    <!-- Q row -->
+    <div class="person-name you row-you">Q</div>
+    <div class="day us"></div><div class="day us"></div><div class="day us"></div><div class="day us"></div><div class="day us"></div><div class="day us"></div><div class="day us"></div>
+    <div class="day us"></div><div class="day us"></div><div class="day us"></div><div class="day us"></div><div class="day us"></div><div class="day us"></div><div class="day us"></div>
+    <div class="day travel"></div><div class="day home-bright"></div><div class="day home-bright"></div><div class="day board"></div><div class="day board"></div><div class="day home-bright"></div><div class="day draper-cell"></div>
+    <div class="day draper-cell"></div><div class="day draper-cell"></div><div class="day draper-cell"></div><div class="day home-bright"></div><div class="day home-bright"></div><div class="day cousins-b"></div><div class="day cousins-m"></div>
+    <div class="day guernsey"></div><div class="day guernsey"></div><div class="day guernsey"></div>
+    <div class="month-divider"></div>
+    <div class="day guernsey"></div><div class="day guernsey"></div><div class="day guernsey"></div><div class="day guernsey"></div><div class="day travel"></div><div class="day travel"></div><div class="day us"></div>
+    
+    <!-- Rach + kids row -->
+    <div class="person-name you row-you">Rach + kids</div>
+    <div class="day us"></div><div class="day us"></div><div class="day us"></div><div class="day us"></div><div class="day us"></div><div class="day us"></div><div class="day us"></div>
+    <div class="day us"></div><div class="day us"></div><div class="day us"></div><div class="day us"></div><div class="day us"></div><div class="day us"></div><div class="day us"></div>
+    <div class="day travel"></div><div class="day home-bright"></div><div class="day home-bright"></div><div class="day home-bright"></div><div class="day home-bright"></div><div class="day home-bright"></div><div class="day draper-cell"></div>
+    <div class="day draper-cell"></div><div class="day draper-cell"></div><div class="day draper-cell"></div><div class="day brum"></div><div class="day brum"></div><div class="day cousins-b"></div><div class="day cousins-m"></div>
+    <div class="day guernsey"></div><div class="day guernsey"></div><div class="day guernsey"></div>
+    <div class="month-divider"></div>
+    <div class="day guernsey"></div><div class="day guernsey"></div><div class="day guernsey"></div><div class="day guernsey"></div><div class="day travel"></div><div class="day travel"></div><div class="day us"></div>
+    
+    <div class="family-rows">
+      <!-- Drapers (TBC) -->
+      <div class="person-name tbc-row">Drapers</div>
+      <div class="day tbc"></div><div class="day tbc"></div><div class="day tbc"></div><div class="day tbc"></div><div class="day tbc"></div><div class="day tbc"></div><div class="day tbc"></div>
+      <div class="day tbc"></div><div class="day tbc"></div><div class="day tbc"></div><div class="day tbc"></div><div class="day tbc"></div><div class="day tbc"></div><div class="day tbc"></div>
+      <div class="day tbc"></div><div class="day tbc"></div><div class="day tbc"></div><div class="day tbc"></div><div class="day tbc"></div><div class="day tbc"></div><div class="day tbc"></div>
+      <div class="day tbc"></div><div class="day tbc"></div><div class="day tbc"></div><div class="day tbc"></div><div class="day tbc"></div><div class="day tbc"></div><div class="day tbc"></div>
+      <div class="day tbc"></div><div class="day tbc"></div><div class="day tbc"></div>
+      <div class="month-divider"></div>
+      <div class="day tbc"></div><div class="day tbc"></div><div class="day tbc"></div><div class="day tbc"></div><div class="day tbc"></div><div class="day tbc"></div><div class="day tbc"></div>
+    </div>
+  </div>
+</div>
+
+<div class="legend">
+  <div class="legend-item"><div class="legend-box embassy-key"></div>Embassy window</div>
+  <div class="legend-item"><div class="legend-box board"></div>Board mtg</div>
+  <div class="legend-item"><div class="legend-box draper-cell"></div>Draper-Scrimshire weekend</div>
+  <div class="legend-item"><div class="legend-box cousins-b"></div>Cousins (B/M)</div>
+  <div class="legend-item"><div class="legend-box guernsey"></div>Guernsey</div>
+  <div class="legend-item"><div class="legend-box home-bright"></div>London</div>
+  <div class="legend-item"><div class="legend-box brum"></div>Birmingham</div>
+  <div class="legend-item"><div class="legend-box travel"></div>Travel</div>
+</div>
+
+<div class="legend family-legend">
+  <div class="legend-item"><div class="legend-box tbc-key"></div>TBC</div>
+</div>
+
+<div class="footer-note">
+  <strong>For Q + Rach to lock:</strong> US Embassy interview slot Mon 17–Fri 28 Aug. Best dates with no other commitments: Mon 17 or Tue 25 / Wed 26.
+</div>
+
+
+
+</body>
+</html>
