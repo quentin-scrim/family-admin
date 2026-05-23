@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aug–Sep 2026 — Trip Plan</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif;
+    background: #0a0a0a;
+    color: #f5f5f5;
+    padding: 16px;
+    min-height: 100vh;
+  }
+  h1 {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 4px;
+    letter-spacing: -0.02em;
+  }
+  .subtitle {
+    font-size: 13px;
+    color: #888;
+    margin-bottom: 16px;
+  }
+  .grid-container {
+    background: #141414;
+    border-radius: 12px;
+    padding: 12px;
+    margin-bottom: 16px;
+    overflow-x: auto;
+  }
+  .person-row, .date-header, .month-header, .embassy-row {
+    display: grid;
+    grid-template-columns: 90px repeat(31, 1fr) 8px repeat(7, 1fr);
+    gap: 2px;
+    min-width: 760px;
+  }
+  .person-row { margin-bottom: 6px; align-items: center; }
+  .date-header { margin-bottom: 4px; }
+  .month-header { margin-bottom: 6px; }
+  .embassy-row { margin-bottom: 8px; align-items: center; height: 18px; }
+  .month-label-aug, .month-label-sep {
+    font-size: 10px;
+    font-weight: 700;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding-bottom: 2px;
+    border-bottom: 1px solid #2a2a2a;
+  }
+  .month-label-aug { grid-column: 2 / 33; }
+  .month-label-sep { grid-column: 34 / 41; }
+  .month-divider { background: #0a0a0a; }
+  .date-cell { font-size: 9px; color: #666; text-align: center; padding: 4px 0; }
+  .dow-cell { font-size: 8px; color: #555; text-align: center; }
+  .dow-cell.we { color: #888; font-weight: 600; }
+  .person-name {
+    font-size: 11px;
+    font-weight: 600;
+    color: #ccc;
+    padding-right: 8px;
+    line-height: 1.2;
+  }
+  .person-name span {
+    display: block;
+    font-size: 9px;
+    color: #888;
+    font-weight: 400;
+  }
+  .person-name.you { color: #fbbf24; }
+  .person-name.embassy { color: #ef4444; font-size: 10px; }
+  
+  .embassy-band {
+    grid-column: 19 / 31;
+    background: repeating-linear-gradient(
+      45deg,
+      rgba(239, 68, 68, 0.25),
+      rgba(239, 68, 68, 0.25) 4px,
+      rgba(239, 68, 68, 0.1) 4px,
+      rgba(239, 68, 68, 0.1) 8px
+    );
+    border: 1px solid rgba(239, 68, 68, 0.5);
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 9px;
+    font-weight: 700;
+    color: #fca5a5;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  
+  .day {
+    height: 28px;
+    border-radius: 3px;
+    background: #1f1f1f;
+    border: 1px solid #2a2a2a;
+    position: relative;
+  }
+  .away { background: #4a1a1a; border-color: #6b2424; }
+  .unavailable { background: #4a3a1a; border-color: #6b5424; }
+  .available { background: #1a3a1f; border-color: #2a5a30; }
+  .london { background: #1a3a1f; border-color: #2a5a30; }
+  .key { background: #1a3a5a; border-color: #2a5a8a; }
+  .travel { background: #2a2a4a; border-color: #4a4a7a; }
+  .pinned { 
+    background: #4a3a0a; 
+    border: 2px solid #fbbf24; 
+    box-shadow: 0 0 6px rgba(251,191,36,0.4);
+  }
+  .pinned::after {
+    content: "📍";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 10px;
+  }
+  .draper { background: #3a1a3a; border-color: #5a2a5a; }
+  .cousins-sarah {
+    background: #1a3a1f;
+    border: 2px solid #22c55e;
+    box-shadow: 0 0 6px rgba(34,197,94,0.5);
+    position: relative;
+  }
+  .cousins-sarah::after {
+    content: "B";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 10px;
+    font-weight: 700;
+    color: #fff;
+  }
+  .cousins-mancs {
+    background: #1a3a1f;
+    border: 2px solid #22c55e;
+    box-shadow: 0 0 6px rgba(34,197,94,0.5);
+    position: relative;
+  }
+  .cousins-mancs::after {
+    content: "M";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 10px;
+    font-weight: 700;
+    color: #fff;
+  }
+  .us { background: #1a1a1a; border-color: #2a2a2a; }
+  
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 20px;
+    font-size: 11px;
+  }
+  .legend-item { display: flex; align-items: center; gap: 6px; }
+  .legend-box { width: 14px; height: 14px; border-radius: 3px; }
+  .legend-box.embassy-key {
+    background: repeating-linear-gradient(
+      45deg,
+      rgba(239, 68, 68, 0.4),
+      rgba(239, 68, 68, 0.4) 3px,
+      rgba(239, 68, 68, 0.15) 3px,
+      rgba(239, 68, 68, 0.15) 6px
+    );
+    border: 1px solid rgba(239, 68, 68, 0.6);
+  }
+  
+  .plan-card {
+    background: #141414;
+    border-radius: 12px;
+    padding: 16px;
+    border-left: 4px solid #fbbf24;
+    background: linear-gradient(90deg, rgba(251,191,36,0.06) 0%, #141414 40%);
+    margin-bottom: 12px;
+  }
+  .plan-card h2 {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .plan-card .duration {
+    font-size: 12px;
+    color: #888;
+    margin-bottom: 12px;
+  }
+  
+  .itinerary { display: grid; gap: 8px; }
+  .day-row {
+    display: grid;
+    grid-template-columns: 110px 1fr;
+    gap: 12px;
+    font-size: 12px;
+    padding: 8px 10px;
+    background: rgba(255,255,255,0.03);
+    border-radius: 6px;
+    border-left: 2px solid #333;
+  }
+  .day-row.travel-row { border-left-color: #4a4a7a; }
+  .day-row.london-row { border-left-color: #2a5a30; }
+  .day-row.pin-row {
+    border-left-color: #fbbf24;
+    background: rgba(251,191,36,0.08);
+  }
+  .day-row.draper-row { border-left-color: #5a2a5a; background: rgba(90,42,90,0.1); }
+  .day-row.cousin-row {
+    border-left-color: #22c55e;
+    background: rgba(34,197,94,0.1);
+  }
+  .day-row.guernsey-row {
+    border-left-color: #2a5a8a;
+    background: rgba(42,90,138,0.1);
+  }
+  .day-date { color: #aaa; font-weight: 600; font-size: 11px; }
+  .day-action { color: #ddd; }
+  .day-action strong { color: #fff; }
+  
+  .alert {
+    background: #2a1010;
+    border-radius: 8px;
+    padding: 12px;
+    margin-top: 16px;
+    font-size: 12px;
+    color: #fecaca;
+    border-left: 3px solid #ef4444;
+    line-height: 1.5;
+  }
+  .alert strong { color: #fff; }
+  
+  .sanity {
+    background: #1a2a3a;
+    border-radius: 8px;
+    padding: 12px;
+    margin-top: 12px;
+    font-size: 12px;
+    color: #cde;
+    border-left: 3px solid #3b82f6;
+    line-height: 1.5;
+  }
+  .sanity strong { color: #fff; }
+</style>
+</head>
+<body>
+
+<h1>Aug → Sep 2026 — The Plan</h1>
+<p class="subtitle">Draper weekend extended (Fri 21–Mon 24). Embassy window flagged.</p>
+
+<div class="grid-container">
+  <div class="month-header">
+    <div></div>
+    <div class="month-label-aug">August</div>
+    <div class="month-divider"></div>
+    <div class="month-label-sep">September</div>
+  </div>
+  
+  <div class="date-header">
+    <div></div>
+    <div class="dow-cell we">S</div><div class="dow-cell we">S</div><div class="dow-cell">M</div><div class="dow-cell">T</div><div class="dow-cell">W</div><div class="dow-cell">T</div><div class="dow-cell">F</div>
+    <div class="dow-cell we">S</div><div class="dow-cell we">S</div><div class="dow-cell">M</div><div class="dow-cell">T</div><div class="dow-cell">W</div><div class="dow-cell">T</div><div class="dow-cell">F</div>
+    <div class="dow-cell we">S</div><div class="dow-cell we">S</div><div class="dow-cell">M</div><div class="dow-cell">T</div><div class="dow-cell">W</div><div class="dow-cell">T</div><div class="dow-cell">F</div>
+    <div class="dow-cell we">S</div><div class="dow-cell we">S</div><div class="dow-cell">M</div><div class="dow-cell">T</div><div class="dow-cell">W</div><div class="dow-cell">T</div><div class="dow-cell">F</div>
+    <div class="dow-cell we">S</div><div class="dow-cell we">S</div><div class="dow-cell">M</div>
+    <div class="month-divider"></div>
+    <div class="dow-cell">T</div><div class="dow-cell">W</div><div class="dow-cell">T</div><div class="dow-cell">F</div><div class="dow-cell we">S</div><div class="dow-cell we">S</div><div class="dow-cell">M</div>
+  </div>
+  
+  <div class="date-header">
+    <div></div>
+    <div class="date-cell">1</div><div class="date-cell">2</div><div class="date-cell">3</div><div class="date-cell">4</div><div class="date-cell">5</div><div class="date-cell">6</div><div class="date-cell">7</div>
+    <div class="date-cell">8</div><div class="date-cell">9</div><div class="date-cell">10</div><div class="date-cell">11</div><div class="date-cell">12</div><div class="date-cell">13</div><div class="date-cell">14</div>
+    <div class="date-cell">15</div><div class="date-cell">16</div><div class="date-cell">17</div><div class="date-cell">18</div><div class="date-cell">19</div><div class="date-cell">20</div><div class="date-cell">21</div>
+    <div class="date-cell">22</div><div class="date-cell">23</div><div class="date-cell">24</div><div class="date-cell">25</div><div class="date-cell">26</div><div class="date-cell">27</div><div class="date-cell">28</div>
+    <div class="date-cell">29</div><div class="date-cell">30</div><div class="date-cell">31</div>
+    <div class="month-divider"></div>
+    <div class="date-cell">1</div><div class="date-cell">2</div><div class="date-cell">3</div><div class="date-cell">4</div><div class="date-cell">5</div><div class="date-cell">6</div><div class="date-cell">7</div>
+  </div>
+
+  <!-- Embassy availability window: Mon 17 - Fri 28 = days 17-28 = grid columns 19-30 -->
+  <div class="embassy-row">
+    <div class="person-name embassy">US Embassy<span>interviews</span></div>
+    <div class="embassy-band">Must be available — Mon 17 → Fri 28</div>
+  </div>
+
+  <!-- You: US 1-14, travel 15, London 16-20, Draper 21-24, London 25-26, Sarah 27, Mancs 28, Guernsey 29-Sep4, travel 5-6 -->
+  <div class="person-row">
+    <div class="person-name you">You<span>Q + Rach + kids</span></div>
+    <div class="day us"></div><div class="day us"></div><div class="day us"></div><div class="day us"></div><div class="day us"></div><div class="day us"></div><div class="day us"></div>
+    <div class="day us"></div><div class="day us"></div><div class="day us"></div><div class="day us"></div><div class="day us"></div><div class="day us"></div><div class="day us"></div>
+    <div class="day travel"></div><div class="day london"></div><div class="day london"></div><div class="day pinned"></div><div class="day pinned"></div><div class="day london"></div><div class="day draper"></div>
+    <div class="day draper"></div><div class="day draper"></div><div class="day draper"></div><div class="day london"></div><div class="day london"></div><div class="day cousins-sarah"></div><div class="day cousins-mancs"></div>
+    <div class="day key"></div><div class="day key"></div><div class="day key"></div>
+    <div class="month-divider"></div>
+    <div class="day key"></div><div class="day key"></div><div class="day key"></div><div class="day key"></div><div class="day travel"></div><div class="day travel"></div><div class="day us"></div>
+  </div>
+
+  <!-- Mancs -->
+  <div class="person-row">
+    <div class="person-name">Mancs<span>Ed + Sonchi</span></div>
+    <div class="day away"></div><div class="day away"></div><div class="day away"></div><div class="day away"></div><div class="day away"></div><div class="day away"></div><div class="day away"></div>
+    <div class="day away"></div><div class="day travel"></div><div class="day available"></div><div class="day available"></div><div class="day available"></div><div class="day available"></div><div class="day away"></div>
+    <div class="day away"></div><div class="day away"></div><div class="day away"></div><div class="day away"></div><div class="day away"></div><div class="day away"></div><div class="day away"></div>
+    <div class="day away"></div><div class="day away"></div><div class="day away"></div><div class="day away"></div><div class="day away"></div><div class="day available"></div><div class="day available"></div>
+    <div class="day available"></div><div class="day available"></div><div class="day available"></div>
+    <div class="month-divider"></div>
+    <div class="day available"></div><div class="day available"></div><div class="day available"></div><div class="day available"></div><div class="day available"></div><div class="day available"></div><div class="day available"></div>
+  </div>
+
+  <!-- Sarah + Billy -->
+  <div class="person-row">
+    <div class="person-name">Sarah+Billy<span>&nbsp;</span></div>
+    <div class="day away"></div><div class="day available"></div><div class="day available"></div><div class="day unavailable"></div><div class="day unavailable"></div><div class="day unavailable"></div><div class="day unavailable"></div>
+    <div class="day unavailable"></div><div class="day available"></div><div class="day available"></div><div class="day available"></div><div class="day available"></div><div class="day available"></div><div class="day available"></div>
+    <div class="day available"></div><div class="day away"></div><div class="day away"></div><div class="day away"></div><div class="day away"></div><div class="day away"></div><div class="day away"></div>
+    <div class="day away"></div><div class="day away"></div><div class="day available"></div><div class="day available"></div><div class="day available"></div><div class="day available"></div><div class="day away"></div>
+    <div class="day away"></div><div class="day away"></div><div class="day away"></div>
+    <div class="month-divider"></div>
+    <div class="day available"></div><div class="day available"></div><div class="day available"></div><div class="day available"></div><div class="day available"></div><div class="day available"></div><div class="day available"></div>
+  </div>
+
+  <!-- Mum+Rupert -->
+  <div class="person-row">
+    <div class="person-name">Mum+Rupert<span>&nbsp;</span></div>
+    <div class="day away"></div><div class="day away"></div><div class="day away"></div><div class="day away"></div><div class="day away"></div><div class="day away"></div><div class="day away"></div>
+    <div class="day away"></div><div class="day travel"></div><div class="day available"></div><div class="day available"></div><div class="day available"></div><div class="day available"></div><div class="day available"></div>
+    <div class="day available"></div><div class="day away"></div><div class="day away"></div><div class="day away"></div><div class="day away"></div><div class="day away"></div><div class="day away"></div>
+    <div class="day away"></div><div class="day away"></div><div class="day away"></div><div class="day away"></div><div class="day away"></div><div class="day available"></div><div class="day available"></div>
+    <div class="day away"></div><div class="day away"></div><div class="day key"></div>
+    <div class="month-divider"></div>
+    <div class="day key"></div><div class="day key"></div><div class="day key"></div><div class="day key"></div><div class="day key"></div><div class="day available"></div><div class="day available"></div>
+  </div>
+</div>
+
+<div class="legend">
+  <div class="legend-item"><div class="legend-box embassy-key"></div>Embassy window</div>
+  <div class="legend-item"><div class="legend-box pinned"></div>Modo board, LDN</div>
+  <div class="legend-item"><div class="legend-box london"></div>London / Home</div>
+  <div class="legend-item"><div class="legend-box draper"></div>Draper weekend</div>
+  <div class="legend-item"><div class="legend-box cousins-sarah"></div>Brum cousins</div>
+  <div class="legend-item"><div class="legend-box cousins-mancs"></div>Mancs cousins</div>
+  <div class="legend-item"><div class="legend-box key"></div>Guernsey</div>
+  <div class="legend-item"><div class="legend-box travel"></div>Travel</div>
+  <div class="legend-item"><div class="legend-box us"></div>In US</div>
+</div>
+
+<div class="plan-card">
+  <h2>The trip</h2>
+  <div class="duration">22 nights, Sat 15 Aug → Sat 5 Sep</div>
+  
+  <div class="itinerary">
+    <div class="day-row travel-row">
+      <div class="day-date">Sat 15 Aug</div>
+      <div class="day-action">Fly to UK.</div>
+    </div>
+    <div class="day-row london-row">
+      <div class="day-date">Sun 16 – Mon 17</div>
+      <div class="day-action">Settle in London. <strong>Embassy window opens Mon 17.</strong></div>
+    </div>
+    <div class="day-row pin-row">
+      <div class="day-date">Tue 18 – Wed 19</div>
+      <div class="day-action"><strong>📍 Modo board meeting, London.</strong></div>
+    </div>
+    <div class="day-row london-row">
+      <div class="day-date">Thu 20</div>
+      <div class="day-action">London. Rach + kids prep / head up north Thu eve or Fri morning.</div>
+    </div>
+    <div class="day-row draper-row">
+      <div class="day-date">Fri 21 – Mon 24</div>
+      <div class="day-action"><strong>Draper long weekend.</strong></div>
+    </div>
+    <div class="day-row london-row">
+      <div class="day-date">Tue 25 – Wed 26</div>
+      <div class="day-action">Back to London. Working days.</div>
+    </div>
+    <div class="day-row cousin-row">
+      <div class="day-date">Thu 27</div>
+      <div class="day-action"><strong>Sarah + Billy + kids.</strong> Their only window before they leave on 28.</div>
+    </div>
+    <div class="day-row cousin-row">
+      <div class="day-date">Fri 28</div>
+      <div class="day-action"><strong>Mancs (Ed + Sonchi).</strong> Last day of embassy window — should be clear by now.</div>
+    </div>
+    <div class="day-row guernsey-row">
+      <div class="day-date">Sat 29 Aug – Fri 4 Sep</div>
+      <div class="day-action"><strong>Guernsey holiday.</strong> Mum + Rupert join from Mon 31.</div>
+    </div>
+    <div class="day-row travel-row">
+      <div class="day-date">Sat 5 – Sun 6 Sep</div>
+      <div class="day-action">Fly back to US.</div>
+    </div>
+  </div>
+</div>
+
+<div class="alert">
+  <strong>⚠️ Embassy constraint:</strong> Q + Rach + kids must be available in London for interviews Mon 17 Aug – Fri 28 Aug. Five planned commitments fall inside this window: board meeting (18–19), Draper weekend (21–24), Brum cousins (27), Mancs cousins (28). <strong>Push to lock the embassy appointment ASAP</strong> — ideally Mon 17 or Tue 25/Wed 26 so it doesn't collide with anything. Worst case if it lands during the Draper weekend: someone trains back to London for the day.
+</div>
+
+<div class="sanity">
+  <strong>Logistics:</strong> Where do Thu 27 + Fri 28 happen? If both up north, plan a 2-night stay then fly Manchester → Guernsey Sat 29 direct (Aurigny / Blue Islands run summer routes). Otherwise back to London first then Guernsey.
+</div>
+
+</body>
+</html>
