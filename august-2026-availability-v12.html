@@ -3,265 +3,415 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Aug–Sep 2026 — Trip Plan</title>
+<title>Draper-Scrimshires UK Trip — Aug 2026</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #fafafa;
+    --panel: #ffffff;
+    --panel-2: #f5f5f5;
+    --text: #18181b;
+    --text-2: #71717a;
+    --text-3: #a1a1aa;
+    --border: #e4e4e7;
+    --border-2: #d4d4d8;
+  }
   body {
     font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif;
-    background: #0a0a0a;
-    color: #f5f5f5;
+    background: var(--bg);
+    color: var(--text);
     padding: 16px;
     min-height: 100vh;
+    max-width: 900px;
+    margin: 0 auto;
+    -webkit-font-smoothing: antialiased;
   }
+  
+  /* ===== HEADER ===== */
+  .header { margin-bottom: 18px; }
   h1 {
-    font-size: 20px;
+    font-size: 24px;
     font-weight: 700;
     margin-bottom: 4px;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.025em;
+    color: var(--text);
   }
   .subtitle {
-    font-size: 13px;
-    color: #888;
-    margin-bottom: 16px;
+    font-size: 14px;
+    color: var(--text-2);
   }
+  
+  /* ===== TBC BANNER ===== */
+  .tbc {
+    background: #fffbeb;
+    border: 1px solid #fcd34d;
+    border-left: 4px solid #f59e0b;
+    border-radius: 10px;
+    padding: 12px 14px;
+    margin-bottom: 16px;
+    font-size: 13px;
+    color: #78350f;
+    line-height: 1.5;
+  }
+  .tbc-title {
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-size: 11px;
+    color: #92400e;
+    margin-bottom: 4px;
+  }
+  .tbc ul {
+    list-style: none;
+    margin-top: 4px;
+  }
+  .tbc li {
+    padding: 2px 0;
+    color: #78350f;
+  }
+  .tbc li::before {
+    content: "• ";
+    color: #f59e0b;
+    font-weight: 700;
+    margin-right: 2px;
+  }
+  
+  /* ===== TLDR CARD ===== */
+  .tldr {
+    background: #f0fdf4;
+    border: 1px solid #86efac;
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-bottom: 16px;
+    font-size: 14px;
+    line-height: 1.55;
+    color: #14532d;
+  }
+  .tldr strong { color: #15803d; font-weight: 700; }
+  
+  /* ===== KEY DATES GRID ===== */
+  .keydates {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(155px, 1fr));
+    gap: 8px;
+    margin-bottom: 22px;
+  }
+  .keydate {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 12px;
+    border-left: 3px solid var(--border-2);
+  }
+  .keydate.draper { border-left-color: #8b5cf6; }
+  .keydate.cousins { border-left-color: #f97316; }
+  .keydate.guernsey { border-left-color: #3b82f6; }
+  .keydate.board { border-left-color: #f59e0b; }
+  .keydate .when {
+    font-size: 11px;
+    color: var(--text-3);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 2px;
+  }
+  .keydate .what {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+  }
+  
+  /* ===== TOGGLE ===== */
+  .toggle-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  .toggle-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-3);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .toggle input { display: none; }
+  .toggle .switch {
+    width: 34px;
+    height: 20px;
+    background: #d4d4d8;
+    border-radius: 11px;
+    position: relative;
+    transition: background 0.2s;
+  }
+  .toggle .switch::after {
+    content: "";
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 16px;
+    height: 16px;
+    background: #fff;
+    border-radius: 50%;
+    transition: transform 0.2s;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+  }
+  .toggle input:checked + .switch { background: #22c55e; }
+  .toggle input:checked + .switch::after { transform: translateX(14px); }
+  .toggle .switch-label {
+    font-size: 13px;
+    color: var(--text-2);
+    font-weight: 500;
+  }
+  
+  /* ===== CALENDAR ===== */
   .grid-container {
-    background: #141414;
+    background: var(--panel);
+    border: 1px solid var(--border);
     border-radius: 12px;
     padding: 12px;
     margin-bottom: 16px;
     overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
   }
-  .person-row, .date-header, .month-header, .embassy-row {
+  .grid {
     display: grid;
-    grid-template-columns: 90px repeat(31, 1fr) 8px repeat(7, 1fr);
-    gap: 2px;
-    min-width: 760px;
+    grid-template-columns: 80px repeat(31, minmax(14px, 1fr)) 4px repeat(7, minmax(14px, 1fr));
+    gap: 1px;
+    min-width: 500px;
   }
-  .person-row { margin-bottom: 6px; align-items: center; }
-  .date-header { margin-bottom: 4px; }
-  .month-header { margin-bottom: 6px; }
-  .embassy-row { margin-bottom: 8px; align-items: center; height: 18px; }
   .month-label-aug, .month-label-sep {
-    font-size: 10px;
+    font-size: 9px;
     font-weight: 700;
-    color: #888;
+    color: var(--text-3);
     text-transform: uppercase;
-    letter-spacing: 0.08em;
-    padding-bottom: 2px;
-    border-bottom: 1px solid #2a2a2a;
+    letter-spacing: 0.06em;
+    padding: 2px 0 4px;
+    border-bottom: 1px solid var(--border);
   }
   .month-label-aug { grid-column: 2 / 33; }
   .month-label-sep { grid-column: 34 / 41; }
-  .month-divider { background: #0a0a0a; }
-  .date-cell { font-size: 9px; color: #666; text-align: center; padding: 4px 0; }
-  .dow-cell { font-size: 8px; color: #555; text-align: center; }
-  .dow-cell.we { color: #888; font-weight: 600; }
+  .month-spacer { grid-column: 1 / 2; }
+  .month-divider { background: var(--bg); }
+  
+  .dow-cell {
+    font-size: 8px;
+    color: var(--text-3);
+    text-align: center;
+    padding: 2px 0;
+  }
+  .dow-cell.we { color: var(--text-2); font-weight: 600; }
+  .date-cell {
+    font-size: 9px;
+    color: var(--text-2);
+    text-align: center;
+    padding: 2px 0 4px;
+    font-weight: 500;
+  }
+  
   .person-name {
     font-size: 11px;
     font-weight: 600;
-    color: #ccc;
+    color: var(--text);
     padding-right: 8px;
-    line-height: 1.2;
-  }
-  .person-name span {
-    display: block;
-    font-size: 9px;
-    color: #888;
-    font-weight: 400;
-  }
-  .person-name.you { color: #fbbf24; }
-  .person-name.embassy { color: #ef4444; font-size: 10px; }
-  
-  .embassy-band {
-    grid-column: 19 / 31;
-    background: repeating-linear-gradient(
-      45deg,
-      rgba(239, 68, 68, 0.25),
-      rgba(239, 68, 68, 0.25) 4px,
-      rgba(239, 68, 68, 0.1) 4px,
-      rgba(239, 68, 68, 0.1) 8px
-    );
-    border: 1px solid rgba(239, 68, 68, 0.5);
-    border-radius: 3px;
     display: flex;
     align-items: center;
-    justify-content: center;
-    font-size: 9px;
-    font-weight: 700;
-    color: #fca5a5;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
   }
+  .person-name.you { color: #b45309; font-weight: 700; }
+  .person-name.family { color: var(--text-2); font-weight: 500; }
+  .person-name.embassy { color: #b91c1c; font-size: 10px; font-weight: 700; }
+  .person-name.tbc-row { color: var(--text-3); font-weight: 500; font-style: italic; }
   
   .day {
-    height: 28px;
+    height: 24px;
     border-radius: 3px;
-    background: #1f1f1f;
-    border: 1px solid #2a2a2a;
+    background: #f4f4f5;
+    border: 1px solid #e4e4e7;
     position: relative;
   }
-  .away { background: #4a1a1a; border-color: #6b2424; }
-  .unavailable { background: #4a3a1a; border-color: #6b5424; }
-  .available { background: #1a3a1f; border-color: #2a5a30; }
-  .london { background: #1a3a1f; border-color: #2a5a30; }
-  .key { background: #1a3a5a; border-color: #2a5a8a; }
-  .travel { background: #2a2a4a; border-color: #4a4a7a; }
-  .pinned { 
-    background: #4a3a0a; 
-    border: 2px solid #fbbf24; 
-    box-shadow: 0 0 6px rgba(251,191,36,0.4);
+  .row-you .day { height: 28px; }
+  
+  /* Light-mode pastels with vivid borders */
+  .away { background: #fee2e2; border-color: #fca5a5; }
+  .school { background: #fef3c7; border-color: #fcd34d; }
+  .home { background: #d1fae5; border-color: #6ee7b7; }
+  .home-bright { background: #86efac; border-color: #22c55e; }
+  .brum { background: #fbcfe8; border-color: #ec4899; }
+  .guernsey { background: #93c5fd; border-color: #3b82f6; }
+  .guernsey-mum { background: #dbeafe; border-color: #93c5fd; }
+  .travel { background: #e5e7eb; border-color: #9ca3af; }
+  .us { background: #fafafa; border-color: #e4e4e7; }
+  .tbc { background: repeating-linear-gradient(45deg, #f4f4f5, #f4f4f5 3px, #e4e4e7 3px, #e4e4e7 6px); border-color: #d4d4d8; }
+  .board { 
+    background: #fde68a; 
+    border: 1.5px solid #f59e0b; 
   }
-  .pinned::after {
+  .board::after {
     content: "📍";
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 10px;
+    font-size: 9px;
   }
-  .draper { background: #3a1a3a; border-color: #5a2a5a; }
-  .cousins-sarah {
-    background: #1a3a1f;
-    border: 2px solid #22c55e;
-    box-shadow: 0 0 6px rgba(34,197,94,0.5);
-    position: relative;
+  .draper-cell { background: #c4b5fd; border-color: #8b5cf6; }
+  .cousins-b, .cousins-m {
+    background: #fdba74;
+    border: 1.5px solid #ea580c;
   }
-  .cousins-sarah::after {
-    content: "B";
+  .cousins-b::after, .cousins-m::after {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 10px;
-    font-weight: 700;
-    color: #fff;
+    font-size: 9px;
+    font-weight: 800;
+    color: #7c2d12;
   }
-  .cousins-mancs {
-    background: #1a3a1f;
-    border: 2px solid #22c55e;
-    box-shadow: 0 0 6px rgba(34,197,94,0.5);
-    position: relative;
-  }
-  .cousins-mancs::after {
-    content: "M";
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 10px;
-    font-weight: 700;
-    color: #fff;
-  }
-  .us { background: #1a1a1a; border-color: #2a2a2a; }
+  .cousins-b::after { content: "B"; }
+  .cousins-m::after { content: "M"; }
   
+  /* Embassy band */
+  .embassy-row {
+    display: grid;
+    grid-template-columns: 80px repeat(31, minmax(14px, 1fr)) 4px repeat(7, minmax(14px, 1fr));
+    gap: 1px;
+    min-width: 500px;
+    margin-top: 6px;
+    margin-bottom: 4px;
+    height: 16px;
+    align-items: center;
+  }
+  .embassy-band {
+    grid-column: 19 / 31;
+    background: repeating-linear-gradient(
+      45deg,
+      rgba(239,68,68,0.18),
+      rgba(239,68,68,0.18) 3px,
+      rgba(239,68,68,0.06) 3px,
+      rgba(239,68,68,0.06) 6px
+    );
+    border: 1px solid rgba(239,68,68,0.4);
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 8px;
+    font-weight: 700;
+    color: #b91c1c;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    height: 14px;
+  }
+  
+  /* Family rows hidden by default */
+  .family-rows { display: none; }
+  body.show-family .family-rows { display: contents; }
+  
+  /* Legend */
   .legend {
     display: flex;
     flex-wrap: wrap;
-    gap: 12px;
-    margin-bottom: 20px;
+    gap: 10px 14px;
+    margin-bottom: 22px;
     font-size: 11px;
+    color: var(--text-2);
   }
   .legend-item { display: flex; align-items: center; gap: 6px; }
-  .legend-box { width: 14px; height: 14px; border-radius: 3px; }
+  .legend-box { width: 12px; height: 12px; border-radius: 3px; flex-shrink: 0; }
   .legend-box.embassy-key {
-    background: repeating-linear-gradient(
-      45deg,
-      rgba(239, 68, 68, 0.4),
-      rgba(239, 68, 68, 0.4) 3px,
-      rgba(239, 68, 68, 0.15) 3px,
-      rgba(239, 68, 68, 0.15) 6px
-    );
-    border: 1px solid rgba(239, 68, 68, 0.6);
+    background: repeating-linear-gradient(45deg, rgba(239,68,68,0.3), rgba(239,68,68,0.3) 3px, rgba(239,68,68,0.1) 3px, rgba(239,68,68,0.1) 6px);
+    border: 1px solid rgba(239,68,68,0.5);
   }
+  .legend-box.tbc-key {
+    background: repeating-linear-gradient(45deg, #f4f4f5, #f4f4f5 3px, #d4d4d8 3px, #d4d4d8 6px);
+    border: 1px solid #d4d4d8;
+  }
+  .legend.family-legend { display: none; }
+  body.show-family .legend.family-legend { display: flex; }
   
-  .plan-card {
-    background: #141414;
-    border-radius: 12px;
-    padding: 16px;
-    border-left: 4px solid #fbbf24;
-    background: linear-gradient(90deg, rgba(251,191,36,0.06) 0%, #141414 40%);
-    margin-bottom: 12px;
-  }
-  .plan-card h2 {
-    font-size: 16px;
-    font-weight: 700;
-    margin-bottom: 4px;
-  }
-  .plan-card .duration {
-    font-size: 12px;
-    color: #888;
-    margin-bottom: 12px;
-  }
-  
-  .itinerary { display: grid; gap: 8px; }
-  .day-row {
-    display: grid;
-    grid-template-columns: 110px 1fr;
-    gap: 12px;
-    font-size: 12px;
-    padding: 8px 10px;
-    background: rgba(255,255,255,0.03);
-    border-radius: 6px;
-    border-left: 2px solid #333;
-  }
-  .day-row.travel-row { border-left-color: #4a4a7a; }
-  .day-row.london-row { border-left-color: #2a5a30; }
-  .day-row.pin-row {
-    border-left-color: #fbbf24;
-    background: rgba(251,191,36,0.08);
-  }
-  .day-row.draper-row { border-left-color: #5a2a5a; background: rgba(90,42,90,0.1); }
-  .day-row.cousin-row {
-    border-left-color: #22c55e;
-    background: rgba(34,197,94,0.1);
-  }
-  .day-row.guernsey-row {
-    border-left-color: #2a5a8a;
-    background: rgba(42,90,138,0.1);
-  }
-  .day-date { color: #aaa; font-weight: 600; font-size: 11px; }
-  .day-action { color: #ddd; }
-  .day-action strong { color: #fff; }
-  
-  .alert {
-    background: #2a1010;
+  /* Footer note */
+  .footer-note {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    border-left: 3px solid #ef4444;
     border-radius: 8px;
-    padding: 12px;
+    padding: 10px 12px;
     margin-top: 16px;
     font-size: 12px;
-    color: #fecaca;
-    border-left: 3px solid #ef4444;
+    color: #7f1d1d;
     line-height: 1.5;
   }
-  .alert strong { color: #fff; }
+  .footer-note strong { color: #991b1b; }
   
-  .sanity {
-    background: #1a2a3a;
-    border-radius: 8px;
-    padding: 12px;
-    margin-top: 12px;
-    font-size: 12px;
-    color: #cde;
-    border-left: 3px solid #3b82f6;
-    line-height: 1.5;
+  @media (max-width: 480px) {
+    body { padding: 12px; }
+    h1 { font-size: 20px; }
+    .keydates { grid-template-columns: 1fr 1fr; }
   }
-  .sanity strong { color: #fff; }
 </style>
 </head>
-<body>
+<body class="show-family">
 
-<h1>Aug → Sep 2026 — The Plan</h1>
-<p class="subtitle">Draper weekend extended (Fri 21–Mon 24). Embassy window flagged.</p>
+<div class="header">
+  <h1>Draper-Scrimshires in the UK</h1>
+  <p class="subtitle">15 August → 5 September 2026</p>
+</div>
+
+<div class="tbc">
+  <div class="tbc-title">⚠ To be confirmed</div>
+  <ul>
+    <li>Draper family availability — for squad weekend 21–24 Aug</li>
+    <li>Q's Dad availability — across the trip</li>
+  </ul>
+</div>
+
+<div class="tldr">
+  We're back in the UK <strong>Sat 15 Aug → Sat 5 Sep</strong>. Draper-Scrimshire weekend <strong>Fri 21–Mon 24</strong>. Cousins <strong>Thu 27 (Brum) + Fri 28 (Mancs)</strong>. Guernsey <strong>Sat 29 Aug → Fri 4 Sep</strong>.
+</div>
+
+<div class="keydates">
+  <div class="keydate board">
+    <div class="when">Tue 18 – Wed 19 Aug</div>
+    <div class="what">📍 Modo board meeting, London</div>
+  </div>
+  <div class="keydate draper">
+    <div class="when">Fri 21 – Mon 24 Aug</div>
+    <div class="what">Draper-Scrimshire weekend</div>
+  </div>
+  <div class="keydate cousins">
+    <div class="when">Thu 27 + Fri 28 Aug</div>
+    <div class="what">Cousins — Brum then Mancs</div>
+  </div>
+  <div class="keydate guernsey">
+    <div class="when">Sat 29 Aug – Fri 4 Sep</div>
+    <div class="what">Guernsey holiday</div>
+  </div>
+</div>
+
+<div class="toggle-wrap">
+  <div class="toggle-label">Calendar</div>
+  <label class="toggle">
+    <input type="checkbox" id="family-toggle" checked>
+    <div class="switch"></div>
+    <span class="switch-label">Show family availability</span>
+  </label>
+</div>
 
 <div class="grid-container">
-  <div class="month-header">
-    <div></div>
+  <div class="grid">
+    <div class="month-spacer"></div>
     <div class="month-label-aug">August</div>
     <div class="month-divider"></div>
     <div class="month-label-sep">September</div>
-  </div>
-  
-  <div class="date-header">
+    
     <div></div>
     <div class="dow-cell we">S</div><div class="dow-cell we">S</div><div class="dow-cell">M</div><div class="dow-cell">T</div><div class="dow-cell">W</div><div class="dow-cell">T</div><div class="dow-cell">F</div>
     <div class="dow-cell we">S</div><div class="dow-cell we">S</div><div class="dow-cell">M</div><div class="dow-cell">T</div><div class="dow-cell">W</div><div class="dow-cell">T</div><div class="dow-cell">F</div>
@@ -270,9 +420,7 @@
     <div class="dow-cell we">S</div><div class="dow-cell we">S</div><div class="dow-cell">M</div>
     <div class="month-divider"></div>
     <div class="dow-cell">T</div><div class="dow-cell">W</div><div class="dow-cell">T</div><div class="dow-cell">F</div><div class="dow-cell we">S</div><div class="dow-cell we">S</div><div class="dow-cell">M</div>
-  </div>
-  
-  <div class="date-header">
+    
     <div></div>
     <div class="date-cell">1</div><div class="date-cell">2</div><div class="date-cell">3</div><div class="date-cell">4</div><div class="date-cell">5</div><div class="date-cell">6</div><div class="date-cell">7</div>
     <div class="date-cell">8</div><div class="date-cell">9</div><div class="date-cell">10</div><div class="date-cell">11</div><div class="date-cell">12</div><div class="date-cell">13</div><div class="date-cell">14</div>
@@ -282,129 +430,115 @@
     <div class="month-divider"></div>
     <div class="date-cell">1</div><div class="date-cell">2</div><div class="date-cell">3</div><div class="date-cell">4</div><div class="date-cell">5</div><div class="date-cell">6</div><div class="date-cell">7</div>
   </div>
-
-  <!-- Embassy availability window: Mon 17 - Fri 28 = days 17-28 = grid columns 19-30 -->
+  
   <div class="embassy-row">
-    <div class="person-name embassy">US Embassy<span>interviews</span></div>
-    <div class="embassy-band">Must be available — Mon 17 → Fri 28</div>
+    <div class="person-name embassy">Embassy</div>
+    <div class="embassy-band">Available Mon 17 → Fri 28</div>
   </div>
 
-  <!-- You: US 1-14, travel 15, London 16-20, Draper 21-24, London 25-26, Sarah 27, Mancs 28, Guernsey 29-Sep4, travel 5-6 -->
-  <div class="person-row">
-    <div class="person-name you">You<span>Q + Rach + kids</span></div>
+  <div class="grid">
+    <!-- Q row -->
+    <div class="person-name you row-you">Q</div>
     <div class="day us"></div><div class="day us"></div><div class="day us"></div><div class="day us"></div><div class="day us"></div><div class="day us"></div><div class="day us"></div>
     <div class="day us"></div><div class="day us"></div><div class="day us"></div><div class="day us"></div><div class="day us"></div><div class="day us"></div><div class="day us"></div>
-    <div class="day travel"></div><div class="day london"></div><div class="day london"></div><div class="day pinned"></div><div class="day pinned"></div><div class="day london"></div><div class="day draper"></div>
-    <div class="day draper"></div><div class="day draper"></div><div class="day draper"></div><div class="day london"></div><div class="day london"></div><div class="day cousins-sarah"></div><div class="day cousins-mancs"></div>
-    <div class="day key"></div><div class="day key"></div><div class="day key"></div>
+    <div class="day travel"></div><div class="day home-bright"></div><div class="day home-bright"></div><div class="day board"></div><div class="day board"></div><div class="day home-bright"></div><div class="day draper-cell"></div>
+    <div class="day draper-cell"></div><div class="day draper-cell"></div><div class="day draper-cell"></div><div class="day home-bright"></div><div class="day home-bright"></div><div class="day cousins-b"></div><div class="day cousins-m"></div>
+    <div class="day guernsey"></div><div class="day guernsey"></div><div class="day guernsey"></div>
     <div class="month-divider"></div>
-    <div class="day key"></div><div class="day key"></div><div class="day key"></div><div class="day key"></div><div class="day travel"></div><div class="day travel"></div><div class="day us"></div>
-  </div>
-
-  <!-- Mancs -->
-  <div class="person-row">
-    <div class="person-name">Mancs<span>Ed + Sonchi</span></div>
-    <div class="day away"></div><div class="day away"></div><div class="day away"></div><div class="day away"></div><div class="day away"></div><div class="day away"></div><div class="day away"></div>
-    <div class="day away"></div><div class="day travel"></div><div class="day available"></div><div class="day available"></div><div class="day available"></div><div class="day available"></div><div class="day away"></div>
-    <div class="day away"></div><div class="day away"></div><div class="day away"></div><div class="day away"></div><div class="day away"></div><div class="day away"></div><div class="day away"></div>
-    <div class="day away"></div><div class="day away"></div><div class="day away"></div><div class="day away"></div><div class="day away"></div><div class="day available"></div><div class="day available"></div>
-    <div class="day available"></div><div class="day available"></div><div class="day available"></div>
+    <div class="day guernsey"></div><div class="day guernsey"></div><div class="day guernsey"></div><div class="day guernsey"></div><div class="day travel"></div><div class="day travel"></div><div class="day us"></div>
+    
+    <!-- Rach + kids row -->
+    <div class="person-name you row-you">Rach + kids</div>
+    <div class="day us"></div><div class="day us"></div><div class="day us"></div><div class="day us"></div><div class="day us"></div><div class="day us"></div><div class="day us"></div>
+    <div class="day us"></div><div class="day us"></div><div class="day us"></div><div class="day us"></div><div class="day us"></div><div class="day us"></div><div class="day us"></div>
+    <div class="day travel"></div><div class="day home-bright"></div><div class="day home-bright"></div><div class="day home-bright"></div><div class="day home-bright"></div><div class="day home-bright"></div><div class="day draper-cell"></div>
+    <div class="day draper-cell"></div><div class="day draper-cell"></div><div class="day draper-cell"></div><div class="day brum"></div><div class="day brum"></div><div class="day cousins-b"></div><div class="day cousins-m"></div>
+    <div class="day guernsey"></div><div class="day guernsey"></div><div class="day guernsey"></div>
     <div class="month-divider"></div>
-    <div class="day available"></div><div class="day available"></div><div class="day available"></div><div class="day available"></div><div class="day available"></div><div class="day available"></div><div class="day available"></div>
-  </div>
-
-  <!-- Sarah + Billy -->
-  <div class="person-row">
-    <div class="person-name">Sarah+Billy<span>&nbsp;</span></div>
-    <div class="day away"></div><div class="day available"></div><div class="day available"></div><div class="day unavailable"></div><div class="day unavailable"></div><div class="day unavailable"></div><div class="day unavailable"></div>
-    <div class="day unavailable"></div><div class="day available"></div><div class="day available"></div><div class="day available"></div><div class="day available"></div><div class="day available"></div><div class="day available"></div>
-    <div class="day available"></div><div class="day away"></div><div class="day away"></div><div class="day away"></div><div class="day away"></div><div class="day away"></div><div class="day away"></div>
-    <div class="day away"></div><div class="day away"></div><div class="day available"></div><div class="day available"></div><div class="day available"></div><div class="day available"></div><div class="day away"></div>
-    <div class="day away"></div><div class="day away"></div><div class="day away"></div>
-    <div class="month-divider"></div>
-    <div class="day available"></div><div class="day available"></div><div class="day available"></div><div class="day available"></div><div class="day available"></div><div class="day available"></div><div class="day available"></div>
-  </div>
-
-  <!-- Mum+Rupert -->
-  <div class="person-row">
-    <div class="person-name">Mum+Rupert<span>&nbsp;</span></div>
-    <div class="day away"></div><div class="day away"></div><div class="day away"></div><div class="day away"></div><div class="day away"></div><div class="day away"></div><div class="day away"></div>
-    <div class="day away"></div><div class="day travel"></div><div class="day available"></div><div class="day available"></div><div class="day available"></div><div class="day available"></div><div class="day available"></div>
-    <div class="day available"></div><div class="day away"></div><div class="day away"></div><div class="day away"></div><div class="day away"></div><div class="day away"></div><div class="day away"></div>
-    <div class="day away"></div><div class="day away"></div><div class="day away"></div><div class="day away"></div><div class="day away"></div><div class="day available"></div><div class="day available"></div>
-    <div class="day away"></div><div class="day away"></div><div class="day key"></div>
-    <div class="month-divider"></div>
-    <div class="day key"></div><div class="day key"></div><div class="day key"></div><div class="day key"></div><div class="day key"></div><div class="day available"></div><div class="day available"></div>
+    <div class="day guernsey"></div><div class="day guernsey"></div><div class="day guernsey"></div><div class="day guernsey"></div><div class="day travel"></div><div class="day travel"></div><div class="day us"></div>
+    
+    <div class="family-rows">
+      <!-- Mancs -->
+      <div class="person-name family">Mancs</div>
+      <div class="day away"></div><div class="day away"></div><div class="day away"></div><div class="day away"></div><div class="day away"></div><div class="day away"></div><div class="day away"></div>
+      <div class="day away"></div><div class="day travel"></div><div class="day home"></div><div class="day home"></div><div class="day home"></div><div class="day home"></div><div class="day away"></div>
+      <div class="day away"></div><div class="day away"></div><div class="day away"></div><div class="day away"></div><div class="day away"></div><div class="day away"></div><div class="day away"></div>
+      <div class="day away"></div><div class="day away"></div><div class="day away"></div><div class="day away"></div><div class="day away"></div><div class="day home"></div><div class="day home"></div>
+      <div class="day home"></div><div class="day home"></div><div class="day home"></div>
+      <div class="month-divider"></div>
+      <div class="day home"></div><div class="day home"></div><div class="day home"></div><div class="day home"></div><div class="day home"></div><div class="day home"></div><div class="day home"></div>
+      
+      <!-- Sarah + Billy -->
+      <div class="person-name family">Sarah+Billy</div>
+      <div class="day away"></div><div class="day home"></div><div class="day home"></div><div class="day school"></div><div class="day school"></div><div class="day school"></div><div class="day school"></div>
+      <div class="day school"></div><div class="day home"></div><div class="day home"></div><div class="day home"></div><div class="day home"></div><div class="day home"></div><div class="day home"></div>
+      <div class="day home"></div><div class="day away"></div><div class="day away"></div><div class="day away"></div><div class="day away"></div><div class="day away"></div><div class="day away"></div>
+      <div class="day away"></div><div class="day away"></div><div class="day home"></div><div class="day home"></div><div class="day home"></div><div class="day home"></div><div class="day away"></div>
+      <div class="day away"></div><div class="day away"></div><div class="day away"></div>
+      <div class="month-divider"></div>
+      <div class="day home"></div><div class="day home"></div><div class="day home"></div><div class="day home"></div><div class="day home"></div><div class="day home"></div><div class="day home"></div>
+      
+      <!-- Mum + Rupert -->
+      <div class="person-name family">Mum+Rupert</div>
+      <div class="day away"></div><div class="day away"></div><div class="day away"></div><div class="day away"></div><div class="day away"></div><div class="day away"></div><div class="day away"></div>
+      <div class="day away"></div><div class="day travel"></div><div class="day home"></div><div class="day home"></div><div class="day home"></div><div class="day home"></div><div class="day home"></div>
+      <div class="day home"></div><div class="day away"></div><div class="day away"></div><div class="day away"></div><div class="day away"></div><div class="day away"></div><div class="day away"></div>
+      <div class="day away"></div><div class="day away"></div><div class="day away"></div><div class="day away"></div><div class="day away"></div><div class="day home"></div><div class="day home"></div>
+      <div class="day away"></div><div class="day away"></div><div class="day guernsey-mum"></div>
+      <div class="month-divider"></div>
+      <div class="day guernsey-mum"></div><div class="day guernsey-mum"></div><div class="day guernsey-mum"></div><div class="day guernsey-mum"></div><div class="day guernsey-mum"></div><div class="day home"></div><div class="day home"></div>
+      
+      <!-- Drapers (TBC) -->
+      <div class="person-name tbc-row">Drapers</div>
+      <div class="day tbc"></div><div class="day tbc"></div><div class="day tbc"></div><div class="day tbc"></div><div class="day tbc"></div><div class="day tbc"></div><div class="day tbc"></div>
+      <div class="day tbc"></div><div class="day tbc"></div><div class="day tbc"></div><div class="day tbc"></div><div class="day tbc"></div><div class="day tbc"></div><div class="day tbc"></div>
+      <div class="day tbc"></div><div class="day tbc"></div><div class="day tbc"></div><div class="day tbc"></div><div class="day tbc"></div><div class="day tbc"></div><div class="day tbc"></div>
+      <div class="day tbc"></div><div class="day tbc"></div><div class="day tbc"></div><div class="day tbc"></div><div class="day tbc"></div><div class="day tbc"></div><div class="day tbc"></div>
+      <div class="day tbc"></div><div class="day tbc"></div><div class="day tbc"></div>
+      <div class="month-divider"></div>
+      <div class="day tbc"></div><div class="day tbc"></div><div class="day tbc"></div><div class="day tbc"></div><div class="day tbc"></div><div class="day tbc"></div><div class="day tbc"></div>
+      
+      <!-- Q's Dad (TBC) -->
+      <div class="person-name tbc-row">Q's Dad</div>
+      <div class="day tbc"></div><div class="day tbc"></div><div class="day tbc"></div><div class="day tbc"></div><div class="day tbc"></div><div class="day tbc"></div><div class="day tbc"></div>
+      <div class="day tbc"></div><div class="day tbc"></div><div class="day tbc"></div><div class="day tbc"></div><div class="day tbc"></div><div class="day tbc"></div><div class="day tbc"></div>
+      <div class="day tbc"></div><div class="day tbc"></div><div class="day tbc"></div><div class="day tbc"></div><div class="day tbc"></div><div class="day tbc"></div><div class="day tbc"></div>
+      <div class="day tbc"></div><div class="day tbc"></div><div class="day tbc"></div><div class="day tbc"></div><div class="day tbc"></div><div class="day tbc"></div><div class="day tbc"></div>
+      <div class="day tbc"></div><div class="day tbc"></div><div class="day tbc"></div>
+      <div class="month-divider"></div>
+      <div class="day tbc"></div><div class="day tbc"></div><div class="day tbc"></div><div class="day tbc"></div><div class="day tbc"></div><div class="day tbc"></div><div class="day tbc"></div>
+    </div>
   </div>
 </div>
 
 <div class="legend">
   <div class="legend-item"><div class="legend-box embassy-key"></div>Embassy window</div>
-  <div class="legend-item"><div class="legend-box pinned"></div>Modo board, LDN</div>
-  <div class="legend-item"><div class="legend-box london"></div>London / Home</div>
-  <div class="legend-item"><div class="legend-box draper"></div>Draper weekend</div>
-  <div class="legend-item"><div class="legend-box cousins-sarah"></div>Brum cousins</div>
-  <div class="legend-item"><div class="legend-box cousins-mancs"></div>Mancs cousins</div>
-  <div class="legend-item"><div class="legend-box key"></div>Guernsey</div>
+  <div class="legend-item"><div class="legend-box board"></div>Board mtg</div>
+  <div class="legend-item"><div class="legend-box draper-cell"></div>Draper-Scrimshire weekend</div>
+  <div class="legend-item"><div class="legend-box cousins-b"></div>Cousins (B/M)</div>
+  <div class="legend-item"><div class="legend-box guernsey"></div>Guernsey</div>
+  <div class="legend-item"><div class="legend-box home-bright"></div>London</div>
+  <div class="legend-item"><div class="legend-box brum"></div>Birmingham</div>
   <div class="legend-item"><div class="legend-box travel"></div>Travel</div>
-  <div class="legend-item"><div class="legend-box us"></div>In US</div>
 </div>
 
-<div class="plan-card">
-  <h2>The trip</h2>
-  <div class="duration">22 nights, Sat 15 Aug → Sat 5 Sep</div>
-  
-  <div class="itinerary">
-    <div class="day-row travel-row">
-      <div class="day-date">Sat 15 Aug</div>
-      <div class="day-action">Fly to UK.</div>
-    </div>
-    <div class="day-row london-row">
-      <div class="day-date">Sun 16 – Mon 17</div>
-      <div class="day-action">Settle in London. <strong>Embassy window opens Mon 17.</strong></div>
-    </div>
-    <div class="day-row pin-row">
-      <div class="day-date">Tue 18 – Wed 19</div>
-      <div class="day-action"><strong>📍 Modo board meeting, London.</strong></div>
-    </div>
-    <div class="day-row london-row">
-      <div class="day-date">Thu 20</div>
-      <div class="day-action">London. Rach + kids prep / head up north Thu eve or Fri morning.</div>
-    </div>
-    <div class="day-row draper-row">
-      <div class="day-date">Fri 21 – Mon 24</div>
-      <div class="day-action"><strong>Draper long weekend.</strong></div>
-    </div>
-    <div class="day-row london-row">
-      <div class="day-date">Tue 25 – Wed 26</div>
-      <div class="day-action">Back to London. Working days.</div>
-    </div>
-    <div class="day-row cousin-row">
-      <div class="day-date">Thu 27</div>
-      <div class="day-action"><strong>Sarah + Billy + kids.</strong> Their only window before they leave on 28.</div>
-    </div>
-    <div class="day-row cousin-row">
-      <div class="day-date">Fri 28</div>
-      <div class="day-action"><strong>Mancs (Ed + Sonchi).</strong> Last day of embassy window — should be clear by now.</div>
-    </div>
-    <div class="day-row guernsey-row">
-      <div class="day-date">Sat 29 Aug – Fri 4 Sep</div>
-      <div class="day-action"><strong>Guernsey holiday.</strong> Mum + Rupert join from Mon 31.</div>
-    </div>
-    <div class="day-row travel-row">
-      <div class="day-date">Sat 5 – Sun 6 Sep</div>
-      <div class="day-action">Fly back to US.</div>
-    </div>
-  </div>
+<div class="legend family-legend">
+  <div class="legend-item"><div class="legend-box home"></div>Family home</div>
+  <div class="legend-item"><div class="legend-box away"></div>Family away</div>
+  <div class="legend-item"><div class="legend-box school"></div>Kids in school</div>
+  <div class="legend-item"><div class="legend-box tbc-key"></div>TBC</div>
 </div>
 
-<div class="alert">
-  <strong>⚠️ Embassy constraint:</strong> Q + Rach + kids must be available in London for interviews Mon 17 Aug – Fri 28 Aug. Five planned commitments fall inside this window: board meeting (18–19), Draper weekend (21–24), Brum cousins (27), Mancs cousins (28). <strong>Push to lock the embassy appointment ASAP</strong> — ideally Mon 17 or Tue 25/Wed 26 so it doesn't collide with anything. Worst case if it lands during the Draper weekend: someone trains back to London for the day.
+<div class="footer-note">
+  <strong>For Q + Rach to lock:</strong> US Embassy interview slot Mon 17–Fri 28 Aug. Best dates with no other commitments: Mon 17 or Tue 25 / Wed 26.
 </div>
 
-<div class="sanity">
-  <strong>Logistics:</strong> Where do Thu 27 + Fri 28 happen? If both up north, plan a 2-night stay then fly Manchester → Guernsey Sat 29 direct (Aurigny / Blue Islands run summer routes). Otherwise back to London first then Guernsey.
-</div>
+<script>
+  const toggle = document.getElementById('family-toggle');
+  toggle.addEventListener('change', () => {
+    document.body.classList.toggle('show-family', toggle.checked);
+  });
+</script>
 
 </body>
 </html>
